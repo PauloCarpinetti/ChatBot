@@ -1,0 +1,19 @@
+# Variáveis de ambiente (MUITO IMPORTANTE NÃO COMMITAR!)
+.env
+.env.*
+
+# Pastas de IDE e Editores
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Arquivos de Sistema Operacional
+.DS_Store
+Thumbs.db
+
+# Configurações locais de IA/Agentes
+.gemini/
+
+# Nota: As pastas `backend` e `frontend-widget` já possuem seus próprios
+# arquivos .gitignore que gerenciam ignorar node_modules, target, .next, etc.
