@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import org.hibernate.annotations.JdbcTypeCode;
 
 @Entity
 @Table(name = "tenants")
@@ -14,6 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Tenant {
     @Id
+    @JdbcTypeCode(java.sql.Types.VARCHAR)
     @Column(columnDefinition = "VARCHAR(36)")
     private UUID id;
 

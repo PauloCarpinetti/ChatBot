@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import org.hibernate.annotations.JdbcTypeCode;
 
 @Entity
 @Table(name = "chat_messages")
@@ -13,12 +14,15 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ChatMessage {
     @Id
+    @JdbcTypeCode(java.sql.Types.VARCHAR)
     @Column(columnDefinition = "VARCHAR(36)")
     private UUID id;
 
+    @JdbcTypeCode(java.sql.Types.VARCHAR)
     @Column(name = "session_id", nullable = false, columnDefinition = "VARCHAR(36)")
     private UUID sessionId;
 
+    @JdbcTypeCode(java.sql.Types.VARCHAR)
     @Column(name = "tenant_id", nullable = false, columnDefinition = "VARCHAR(36)")
     private UUID tenantId;
 

@@ -1,4 +1,4 @@
-package com.agentechat.backend;
+package br.com.paulo.chatbot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -44,7 +44,13 @@ public class ChatService {
     public String processMessage(UUID tenantId, UUID sessionId, String userIdentifier, String userText) {
         // 1. Recebimento e Validação
         Tenant tenant = tenantRepository.findById(tenantId)
-                .orElseThrow(() -> new IllegalArgumentException("Tenant não encontrado"));
+                .orElseGet(() -> {
+                    Tenant newTenant = new Tenant();
+                    newTenant.setId(tenantId);
+                    newTenant.setName("Acme Corp (Auto-Criado)");
+                    newTenant.setApiKey(UUID.randomUUID().toString());
+                    return tenantRepository.save(newTenant);
+                });
         
         ChatSession session = chatSessionRepository.findByIdAndTenantId(sessionId, tenantId)
                 .orElseGet(() -> {
