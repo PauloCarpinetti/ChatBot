@@ -23,3 +23,8 @@
 
 ## 4. Orçamento e Limites
 - Garantir logs do tamanho do texto antes de chamar a IA, para ter rastreabilidade se a conta exceder limites.
+
+## 5. Estratégia de Testes (TDD/Integração)
+- **Testes Unitários (Sanitization)**: Criar testes mockando diferentes cenários de HTML (com scripts maliciosos, com muito ruído, ou textos imensos) para garantir que a lógica de limpeza e truncamento funcione corretamente sem estourar o limite de tokens.
+- **Testes de Resiliência (Retries)**: Usar *mocks* na chamada HTTP (ex: WireMock ou Mockito para a interface da OpenAI) para forçar erros `500` e `429` (Rate Limit) e validar se o job realmente entra em status de repetição com atraso progressivo (Exponential Backoff).
+- **Testes de Fluxo Completo**: Testar localmente a trigger do Cron injetando uma URL controlada para verificar se o dado chega até o estágio final (salvo no banco/vector store) com status `completed`.
