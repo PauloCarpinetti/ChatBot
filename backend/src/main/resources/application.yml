@@ -17,7 +17,7 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
-    url: jdbc:mysql://localhost:3306/${MYSQL_DATABASE:chat_tenant_db}
+    url: jdbc:mysql://localhost:3307/${MYSQL_DATABASE:chat_tenant_db}
     user: ${MYSQL_USER:chat_user}
     password: ${MYSQL_PASSWORD:chat_password}
 
@@ -25,3 +25,13 @@ langchain4j:
   open-ai:
     chat-model:
       api-key: ${OPENAI_API_KEY:demo}
+      model-name: gpt-4o-mini
+    embedding-model:
+      api-key: ${OPENAI_API_KEY:demo}
+      model-name: text-embedding-3-small
+
+chatbot:
+  weaviate:
+    host: localhost
+    port: ${WEAVIATE_PORT:8090}
+    scheme: http
