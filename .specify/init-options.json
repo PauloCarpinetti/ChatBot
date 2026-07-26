@@ -4,5 +4,5 @@
   "here": false,
   "integration": "gemini",
   "script": "ps",
-  "speckit_version": "0.13.2"
+  "speckit_version": "0.12.8"
 }
