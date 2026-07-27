@@ -51,4 +51,25 @@ public class DocumentIngestionService {
             throw new RuntimeException("Erro ao processar o PDF: " + e.getMessage(), e);
         }
     }
+
+    public void ingestText(String text, String sourceUrl, UUID tenantId) {
+        try {
+            Document document = new Document(text);
+            document.metadata().put("tenant_id", tenantId.toString());
+            document.metadata().put("source_url", sourceUrl);
+
+            EmbeddingStoreIngestor ingestor = EmbeddingStoreIngestor.builder()
+                    .documentSplitter(DocumentSplitters.recursive(1000, 200))
+                    .embeddingModel(embeddingModel)
+                    .embeddingStore(embeddingStore)
+                    .build();
+
+            System.out.println("Ingesting raw text from: " + sourceUrl + " (length: " + text.length() + ")");
+            ingestor.ingest(document);
+            System.out.println("Text ingestion completed successfully!");
+            
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao processar texto web: " + e.getMessage(), e);
+        }
+    }
 }

@@ -1,0 +1,23 @@
+{
+  "name": "scraper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@google-cloud/functions-framework": "^5.0.5",
+    "axios": "^1.18.1",
+    "cheerio": "^1.2.0",
+    "dotenv": "^17.4.2",
+    "mysql2": "^3.23.1"
+  },
+  "devDependencies": {
+    "jest": "^30.4.2"
+  }
+}
