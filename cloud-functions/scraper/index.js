@@ -15,7 +15,7 @@ const DB_CONFIG = {
 const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:8081/api/documents/text';
 const MAX_RETRIES = 3;
 
-functions.http('processScrapingJobs', async (req, res) => {
+const processScrapingJobs = async (req, res) => {
     let connection;
     try {
         connection = await mysql.createConnection(DB_CONFIG);
@@ -93,4 +93,8 @@ functions.http('processScrapingJobs', async (req, res) => {
             await connection.end();
         }
     }
-});
+};
+
+functions.http('processScrapingJobs', processScrapingJobs);
+
+module.exports = { processScrapingJobs };
