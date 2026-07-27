@@ -1,8 +1,8 @@
 # Plan: Core IA (Background Processor)
 
 ## 1. Pesquisa e Definições Arquiteturais
-- **Provedor da Cloud Function**: Decidir se será AWS Lambda, Google Cloud Functions ou Azure Functions.
-- **Linguagem**: Sugere-se Node.js ou Python pela facilidade com pacotes de scraping (ex: `cheerio` ou `BeautifulSoup`), mas Java (Spring Cloud Function) pode ser usado para manter consistência com o backend atual.
+- **Provedor da Cloud Function**: **Google Cloud Functions** (com acionamento via Google Cloud Scheduler para o Cron).
+- **Linguagem**: Python (usando `BeautifulSoup`) ou Node.js (usando `cheerio`/`puppeteer`) para facilitar a implementação do Scraping e rodar de forma leve no Google Cloud.
 - **Cron Job**: Definir a periodicidade (ex: de hora em hora, diariamente às 3 da manhã).
 
 ## 2. Scraping e Sanitização
