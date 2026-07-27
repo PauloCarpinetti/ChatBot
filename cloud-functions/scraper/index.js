@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ path: '../../.env' });
 const functions = require('@google-cloud/functions-framework');
 const mysql = require('mysql2/promise');
 const axios = require('axios');
@@ -7,9 +7,9 @@ const { sanitizeHtml } = require('./sanitizer');
 const DB_CONFIG = {
     host: process.env.DB_HOST || 'localhost',
     port: process.env.DB_PORT || 3307,
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || 'root',
-    database: process.env.DB_NAME || 'chat_tenant_db',
+    user: process.env.MYSQL_USER || 'root',
+    password: process.env.MYSQL_PASSWORD || 'root',
+    database: process.env.MYSQL_DATABASE || 'chat_tenant_db',
 };
 
 const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:8081/api/documents/text';
@@ -65,6 +65,9 @@ const processScrapingJobs = async (req, res) => {
             res.status(200).send(`Job ${job.id} completed successfully.`);
         } catch (error) {
             console.error(`Error processing job ${job.id}:`, error.message);
+            if (error.response) {
+                console.error(`Backend response data:`, error.response.data);
+            }
             
             const newRetryCount = job.retry_count + 1;
             
