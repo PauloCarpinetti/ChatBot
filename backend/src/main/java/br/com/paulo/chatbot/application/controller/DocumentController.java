@@ -27,4 +27,20 @@ public class DocumentController {
         
         return ResponseEntity.ok("Documento processado e indexado com sucesso para o tenant: " + tenantId);
     }
+
+    public static class TextUploadRequest {
+        public String tenantId;
+        public String text;
+        public String sourceUrl;
+    }
+
+    @PostMapping("/text")
+    public ResponseEntity<String> uploadText(@RequestBody TextUploadRequest request) {
+        ingestionService.ingestText(
+                request.text, 
+                request.sourceUrl, 
+                UUID.fromString(request.tenantId)
+        );
+        return ResponseEntity.ok("Texto processado e indexado com sucesso para o tenant: " + request.tenantId);
+    }
 }
