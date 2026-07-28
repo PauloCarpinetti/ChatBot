@@ -38,3 +38,10 @@ chatbot:
     host: localhost
     port: ${WEAVIATE_PORT:8090}
     scheme: http
+
+jwt:
+  secret: ${JWT_SECRET:defaultSecretKeyForDevelopmentOnlyDoNotUseInProd}
+
+cors:
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
+
