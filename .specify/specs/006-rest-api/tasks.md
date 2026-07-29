@@ -1,0 +1,6 @@
+- [x] Create presentation package and sub-packages (dto, controller, exception)
+- [x] Implement ChatRequest, ChatResponse and ErrorResponse DTOs
+- [x] Implement GlobalExceptionHandler with 400, 401, 504 and 500 error handling
+- [x] Implement ChatController with POST /message and GET /history
+- [x] Write ChatControllerTest with MockMvc
+- [x] Pass all unit and integration tests
