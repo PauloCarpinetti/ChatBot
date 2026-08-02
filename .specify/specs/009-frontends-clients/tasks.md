@@ -1,0 +1,5 @@
+- [x] Inicializar branch para a Spec 009.
+- [x] Construir frontend `laravel-biohealth` e recuperar integridade do repositório Laravel.
+- [x] Construir frontend estático `wordpress-initech` seguindo design corporativo moderno e modo escuro.
+- [x] Gerar e configurar projeto Next.js em `nextjs-acmecorp` contendo layout para Política de Trocas.
+- [ ] Commitar as pastas com os novos frontends nesta nova spec.

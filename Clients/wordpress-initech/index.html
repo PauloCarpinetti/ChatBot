@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Initech - Guia de Software</title>
+    <!-- Simulating WordPress Standard Enqueues -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['Roboto Mono', 'monospace'],
+                    },
+                    colors: {
+                        initech: {
+                            50: '#f4f6ff',
+                            100: '#e9edff',
+                            500: '#3b5bdb',
+                            600: '#364fc7',
+                            900: '#1c223a',
+                            950: '#0f1322',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom WP-like styles and premium aesthetics */
+        body {
+            background-color: #0f1322;
+            color: #e9edff;
+            overflow-x: hidden;
+        }
+        
+        .hero-gradient {
+            background: radial-gradient(circle at top right, rgba(59, 91, 219, 0.15) 0%, rgba(15, 19, 34, 1) 50%),
+                        radial-gradient(circle at bottom left, rgba(132, 94, 247, 0.1) 0%, rgba(15, 19, 34, 1) 50%);
+        }
+
+        .glass-card {
+            background: rgba(28, 34, 58, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border-radius: 1rem;
+        }
+
+        .tech-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+
+        /* Subtle floating animation */
+        @keyframes float-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float {
+            animation: float-slow 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="wp-custom-theme antialiased min-h-screen flex flex-col relative tech-grid hero-gradient">
+    
+    <!-- WP-like Site Header -->
+    <header class="w-full border-b border-white/5 bg-initech-950/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="container mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-initech-500 to-purple-600 rounded-lg flex items-center justify-center transform rotate-3">
+                    <i class="fa-solid fa-code text-white"></i>
+                </div>
+                <span class="text-2xl font-extrabold tracking-tight text-white">INITECH</span>
+            </div>
+            <nav class="hidden md:flex gap-8 text-sm font-medium text-slate-300">
+                <a href="#" class="hover:text-white transition-colors">Produtos</a>
+                <a href="#" class="hover:text-white transition-colors">Soluções</a>
+                <a href="#" class="text-white">Guia de Software</a>
+                <a href="#" class="hover:text-white transition-colors">Suporte</a>
+            </nav>
+            <button class="bg-initech-600 hover:bg-initech-500 text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all shadow-[0_0_20px_rgba(59,91,219,0.3)]">
+                Portal do Cliente
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content (Simulating a WP Page Builder Content) -->
+    <main class="flex-grow container mx-auto px-6 py-20 flex flex-col items-center justify-center relative z-10 wp-content">
+        
+        <div class="max-w-4xl w-full">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-initech-100 text-sm font-mono mb-6">
+                    <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                    Sistemas Corporativos de Alta Performance
+                </div>
+                <h1 class="text-5xl md:text-6xl font-extrabold text-white mb-6 tracking-tight leading-tight">
+                    Initech <span class="text-transparent bg-clip-text bg-gradient-to-r from-initech-500 to-purple-500">Guia de Software</span>
+                </h1>
+                <p class="text-xl text-slate-400 max-w-2xl mx-auto font-light">
+                    Soluções licenciadas para otimizar sua operação corporativa com segurança e escalabilidade.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 animate-float">
+                
+                <!-- Card 1 -->
+                <div class="glass-card p-8 group hover:border-initech-500/50 transition-colors duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-initech-500/10 flex items-center justify-center mb-6 border border-initech-500/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-file-contract text-xl text-initech-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Licenciamento & Renovação</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                        A Initech fornece licenças de software corporativo. A renovação é <strong>automática</strong> e debitada anualmente para garantir a continuidade ininterrupta dos seus serviços.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-card p-8 group hover:border-purple-500/50 transition-colors duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center mb-6 border border-purple-500/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-headset text-xl text-purple-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Suporte 24/7</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                        O suporte técnico Nível 1 funciona <strong>24/7</strong>. Estamos sempre disponíveis para resolver incidentes operacionais de forma ágil e eficiente.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Important Notice Banner -->
+            <div class="mt-8 glass-card p-6 border-l-4 border-l-rose-500 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="absolute right-0 top-0 w-32 h-32 bg-rose-500/5 blur-3xl rounded-full"></div>
+                <div class="flex items-center gap-4 relative z-10">
+                    <div class="w-10 h-10 rounded-full bg-rose-500/10 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-triangle-exclamation text-rose-500"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-white font-semibold">Política de Cancelamento</h4>
+                        <p class="text-slate-400 text-sm mt-1">O cancelamento só pode ser feito mediante aviso prévio de <strong>60 dias</strong>.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- WP-like Footer -->
+    <footer class="border-t border-white/5 py-8 mt-auto relative z-10">
+        <div class="container mx-auto px-6 text-center text-slate-500 text-sm">
+            <p>&copy; 2026 Initech Software Solutions. Desenvolvido no WordPress.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
