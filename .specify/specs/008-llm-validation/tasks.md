@@ -1,0 +1,9 @@
+- [ ] 1. Configurações Iniciais e Limpeza
+  - [ ] 1.1 Remover arquivos do Laravel na pasta `Clients/`.
+  - [ ] 1.2 Limpar resíduos PHP e arquivos de configuração desnecessários em `Clients/`.
+- [ ] 2. Configuração do Backend
+  - [ ] 2.1 Criar `backend/src/test/resources/application-test.yml`.
+- [ ] 3. Criação de Testes de Integração e Validação (TDD)
+  - [ ] 3.1 Desenvolver `LlmMockIntegrationTest.java` em `backend/src/test/java/br/com/paulo/chatbot/application/`.
+  - [ ] 3.2 Desenvolver `LlmJudgeEvaluationTest.java` em `backend/src/test/java/br/com/paulo/chatbot/domain/ai/`.
+  - [ ] 3.3 Desenvolver `TenantLeakageTest.java` em `backend/src/test/java/br/com/paulo/chatbot/security/`.
