@@ -1,4 +1,14 @@
 @import "tailwindcss";
+
+@source "../../src";
+
+@theme {
+  --color-chat-primary: var(--chat-primary-color, #2563EB);
+  --color-chat-primary-hover: var(--chat-primary-hover, #1D4ED8);
+  --color-chat-bg: var(--chat-bg-color, #FFFFFF);
+  --color-chat-text: var(--chat-text-color, #1F2937);
+}
+
 @config "../../tailwind.config.ts";
 
 :root {

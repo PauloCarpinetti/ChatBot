@@ -23,10 +23,10 @@ export function ChatInput({ onSend, disabled }: ChatInputProps) {
   };
 
   return (
-    <div className="tw-chat-flex tw-chat-gap-2 tw-chat-p-4 tw-chat-border-t tw-chat-border-gray-200 tw-chat-bg-white">
+    <div className="twchat:flex twchat:gap-2 twchat:p-4 twchat:border-t twchat:border-gray-200 twchat:bg-white">
       <input
         type="text"
-        className="tw-chat-flex-1 tw-chat-px-4 tw-chat-py-2 tw-chat-border tw-chat-border-gray-300 tw-chat-rounded-full tw-chat-focus:outline-none tw-chat-focus:border-chat-primary disabled:tw-chat-opacity-50 tw-chat-text-sm"
+        className="twchat:flex-1 twchat:px-4 twchat:py-2 twchat:border twchat:border-gray-300 twchat:rounded-full twchat:focus:outline-none twchat:focus:border-chat-primary disabled:twchat:opacity-50 twchat:text-sm"
         placeholder="Digite sua mensagem..."
         value={text}
         onChange={(e) => setText(e.target.value)}
@@ -36,7 +36,7 @@ export function ChatInput({ onSend, disabled }: ChatInputProps) {
       <button
         onClick={handleSend}
         disabled={disabled || !text.trim()}
-        className="tw-chat-p-2 tw-chat-bg-chat-primary tw-chat-text-white tw-chat-rounded-full hover:tw-chat-bg-chat-primary-hover disabled:tw-chat-opacity-50 tw-chat-transition-colors"
+        className="twchat:p-2 twchat:bg-chat-primary twchat:text-white twchat:rounded-full hover:twchat:bg-chat-primary-hover disabled:twchat:opacity-50 twchat:transition-colors"
       >
         <Send size={20} />
       </button>

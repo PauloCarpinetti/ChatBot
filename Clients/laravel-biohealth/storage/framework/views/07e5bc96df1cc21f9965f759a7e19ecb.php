@@ -129,6 +129,15 @@
                 &copy; <?php echo e(date('Y')); ?> BioHealth. Todos os direitos reservados.
             </footer>
         </main>
+        
+        <!-- Chatbot Widget Integration -->
+        <script>
+            window.ChatBotConfig = {
+                token: 'mock-jwt-biohealth',
+                themeColor: '#10b981'
+            };
+        </script>
+        <script src="<?php echo e(asset('widget/embed.js')); ?>"></script>
     </body>
 </html>
 <?php /**PATH C:\Users\paulo\Desktop\projetosPortifolio\ChatBot\ChatBot\Clients\laravel-biohealth\resources\views/welcome.blade.php ENDPATH**/ ?>

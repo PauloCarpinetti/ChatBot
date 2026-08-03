@@ -1,7 +1,7 @@
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
-  prefix: 'tw-chat-',
+  prefix: 'twchat',
   content: [
     './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],

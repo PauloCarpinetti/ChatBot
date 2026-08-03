@@ -57,21 +57,21 @@ export function ChatWindow({ token, onClose }: ChatWindowProps) {
   };
 
   return (
-    <div className="tw-chat-flex tw-chat-flex-col tw-chat-w-80 tw-chat-h-[500px] tw-chat-bg-white tw-chat-rounded-2xl tw-chat-shadow-2xl tw-chat-overflow-hidden tw-chat-border tw-chat-border-gray-200">
+    <div className="twchat:flex twchat:flex-col twchat:w-80 twchat:h-[500px] twchat:bg-white twchat:rounded-2xl twchat:shadow-2xl twchat:overflow-hidden twchat:border twchat:border-gray-200">
       {/* Header */}
       <div 
-        className="tw-chat-flex tw-chat-justify-between tw-chat-items-center tw-chat-p-4 tw-chat-text-white tw-chat-bg-chat-primary"
+        className="twchat:flex twchat:justify-between twchat:items-center twchat:p-4 twchat:text-white twchat:bg-chat-primary"
       >
-        <h3 className="tw-chat-font-semibold tw-chat-text-base tw-chat-m-0">Atendimento</h3>
-        <button onClick={onClose} className="tw-chat-text-white hover:tw-chat-text-gray-200 tw-chat-transition-colors">
+        <h3 className="twchat:font-semibold twchat:text-base twchat:m-0">Atendimento</h3>
+        <button onClick={onClose} className="twchat:text-white hover:twchat:text-gray-200 twchat:transition-colors">
           <X size={20} />
         </button>
       </div>
 
       {/* Messages Area */}
-      <div className="tw-chat-flex-1 tw-chat-overflow-y-auto tw-chat-p-4 tw-chat-bg-gray-50">
+      <div className="twchat:flex-1 twchat:overflow-y-auto twchat:p-4 twchat:bg-gray-50">
         {messages.length === 0 && (
-          <div className="tw-chat-text-center tw-chat-text-gray-500 tw-chat-text-sm tw-chat-mt-10">
+          <div className="twchat:text-center twchat:text-gray-500 twchat:text-sm twchat:mt-10">
             Como posso ajudar hoje?
           </div>
         )}
@@ -79,8 +79,8 @@ export function ChatWindow({ token, onClose }: ChatWindowProps) {
           <ChatMessage key={index} role={msg.role} content={msg.content} />
         ))}
         {isLoading && (
-          <div className="tw-chat-flex tw-chat-justify-start tw-chat-mb-4">
-            <div className="tw-chat-bg-gray-200 tw-chat-text-gray-500 tw-chat-px-4 tw-chat-py-2 tw-chat-rounded-2xl tw-chat-rounded-bl-none tw-chat-text-sm tw-chat-animate-pulse">
+          <div className="twchat:flex twchat:justify-start twchat:mb-4">
+            <div className="twchat:bg-gray-200 twchat:text-gray-500 twchat:px-4 twchat:py-2 twchat:rounded-2xl twchat:rounded-bl-none twchat:text-sm twchat:animate-pulse">
               Digitando...
             </div>
           </div>

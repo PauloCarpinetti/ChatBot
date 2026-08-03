@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:widget": "node scripts/build-widget.mjs && node scripts/deploy-widget.mjs",
+    "build:widget": "npx @tailwindcss/cli -i ./src/app/globals.css -o ./public/embed.css && node scripts/build-widget.mjs && node scripts/deploy-widget.mjs",
     "start": "next start",
     "lint": "eslint"
   },

@@ -34,7 +34,7 @@ export default function RootLayout({
             __html: `
               window.ChatBotConfig = {
                 token: 'mock-jwt-acmecorp',
-                themeColor: '#f97316'
+                themeColor: '#06b6d4'
               };
             `,
           }}
