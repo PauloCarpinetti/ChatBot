@@ -129,5 +129,14 @@
                 &copy; {{ date('Y') }} BioHealth. Todos os direitos reservados.
             </footer>
         </main>
+        
+        <!-- Chatbot Widget Integration -->
+        <script>
+            window.ChatBotConfig = {
+                token: 'mock-jwt-biohealth',
+                themeColor: '#10b981'
+            };
+        </script>
+        <script src="{{ asset('widget/embed.js') }}"></script>
     </body>
 </html>

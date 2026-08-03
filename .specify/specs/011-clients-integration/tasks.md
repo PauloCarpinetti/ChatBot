@@ -1,0 +1,6 @@
+- [x] Criar script `deploy-widget.mjs` no `frontend-widget` para automatizar a cópia do `embed.js` e atualizar o comando `build` no `package.json`.
+- [x] Rodar o build e distribuir o widget.
+- [x] Adicionar container do widget e tag de script no Laravel (`welcome.blade.php`) (BioHealth).
+- [x] Adicionar container do widget e script no WordPress (Initech) via injeção no template base do tema.
+- [x] Adicionar container do widget e script de Next.js (Acme Corp).
+- [x] Testar a interface em cada client rodando seus respectivos comandos de servidor e testar se os estilos não se sobrepõem e as mensagens são encaminhadas adequadamente à API ou mock.
