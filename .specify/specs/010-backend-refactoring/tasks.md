@@ -1,0 +1,9 @@
+- [x] Inicializar branch `010-backend-refactoring` para a nova spec.
+- [x] Criar arquivos de especificação (.specify).
+- [ ] Mapear arquitetura atual do backend (Domain/Application).
+- [ ] Elaborar o plano de implementação (Implementation Plan) detalhando as mudanças nas classes.
+- [ ] Extrair interfaces para desacoplar a chamada ao serviço LLM.
+- [ ] Implementar mecanismo de isolamento de Tenants (ex: ThreadLocal / Filter).
+- [ ] Implementar integração base para o avaliador LLM Judge.
+- [ ] Executar testes da Spec 008 (TDD) para validar refatoração.
+- [ ] Realizar commit, pull request e merge com a main.
