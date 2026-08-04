@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -70,6 +71,31 @@ public class DocumentIngestionService {
             
         } catch (Exception e) {
             throw new RuntimeException("Erro ao processar texto web: " + e.getMessage(), e);
+        }
+    }
+
+    public void ingestMarkdown(String text, String fileName, Map<String, String> extraMetadata, UUID tenantId) {
+        try {
+            Document document = new Document(text);
+            document.metadata().put("tenant_id", tenantId.toString());
+            document.metadata().put("file_name", fileName);
+            
+            if (extraMetadata != null) {
+                extraMetadata.forEach((key, value) -> document.metadata().put(key, value));
+            }
+
+            EmbeddingStoreIngestor ingestor = EmbeddingStoreIngestor.builder()
+                    .documentSplitter(DocumentSplitters.recursive(1000, 200))
+                    .embeddingModel(embeddingModel)
+                    .embeddingStore(embeddingStore)
+                    .build();
+
+            System.out.println("Ingesting markdown file: " + fileName + " (length: " + text.length() + ")");
+            ingestor.ingest(document);
+            System.out.println("Markdown ingestion completed successfully!");
+            
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao processar markdown: " + e.getMessage(), e);
         }
     }
 }

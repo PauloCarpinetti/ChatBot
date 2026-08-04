@@ -10,4 +10,5 @@ import java.util.UUID;
 @Repository
 public interface TenantRepository extends JpaRepository<Tenant, UUID> {
     Optional<Tenant> findByApiKey(String apiKey);
+    Optional<Tenant> findByName(String name);
 }

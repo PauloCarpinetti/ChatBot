@@ -43,4 +43,25 @@ public class DocumentController {
         );
         return ResponseEntity.ok("Texto processado e indexado com sucesso para o tenant: " + request.tenantId);
     }
+
+    @PostMapping("/markdown")
+    public ResponseEntity<String> uploadMarkdown(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("tenantId") UUID tenantId,
+            @RequestParam(value = "metadata", required = false) String metadataJson) {
+        try {
+            java.util.Map<String, String> metadata = null;
+            if (metadataJson != null && !metadataJson.isEmpty()) {
+                com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+                metadata = mapper.readValue(metadataJson, new com.fasterxml.jackson.core.type.TypeReference<java.util.Map<String, String>>() {});
+            }
+
+            String content = new String(file.getBytes(), java.nio.charset.StandardCharsets.UTF_8);
+            ingestionService.ingestMarkdown(content, file.getOriginalFilename(), metadata, tenantId);
+            
+            return ResponseEntity.ok("Arquivo markdown processado e indexado com sucesso para o tenant: " + tenantId);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erro ao processar markdown: " + e.getMessage());
+        }
+    }
 }

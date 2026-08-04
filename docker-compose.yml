@@ -4,22 +4,24 @@ services:
     container_name: chat_mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-chat_db}
+      MYSQL_USER: ${MYSQL_USER:-user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-password}
     ports:
       - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    networks:
+      - chat_network
 
   weaviate:
     image: cr.weaviate.io/semitechnologies/weaviate:1.24.8
     container_name: chat_weaviate
     restart: always
     ports:
-      - "${WEAVIATE_PORT}:8080"
-      - "${WEAVIATE_GRPC_PORT}:50051"
+      - "${WEAVIATE_PORT:-8080}:8080"
+      - "${WEAVIATE_GRPC_PORT:-50051}:50051"
     environment:
       QUERY_DEFAULTS_LIMIT: 25
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
@@ -29,7 +31,93 @@ services:
       CLUSTER_HOSTNAME: 'node1'
     volumes:
       - weaviate_data:/var/lib/weaviate
+    networks:
+      - chat_network
+
+  redis:
+    image: redis:alpine
+    container_name: chat_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - chat_network
+
+  backend:
+    build:
+      context: ./backend
+    container_name: chat_backend
+    restart: always
+    ports:
+      - "8081:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-chat_db}
+      - SPRING_FLYWAY_URL=jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-chat_db}
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER:-user}
+      - SPRING_FLYWAY_USER=${MYSQL_USER:-user}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD:-password}
+      - SPRING_FLYWAY_PASSWORD=${MYSQL_PASSWORD:-password}
+      - WEAVIATE_HOST=weaviate
+      - WEAVIATE_PORT=8080
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    depends_on:
+      - mysql
+      - weaviate
+      - redis
+    volumes:
+      - ./docs:/app/docs
+    networks:
+      - chat_network
+
+  laravel_biohealth:
+    build:
+      context: ./Clients/laravel-biohealth
+    container_name: chat_laravel
+    restart: always
+    ports:
+      - "8001:80"
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=${MYSQL_DATABASE:-chat_db}
+      - DB_USERNAME=${MYSQL_USER:-user}
+      - DB_PASSWORD=${MYSQL_PASSWORD:-password}
+    depends_on:
+      - mysql
+      - backend
+    networks:
+      - chat_network
+
+  nextjs_acmecorp:
+    build:
+      context: ./Clients/nextjs-acmecorp
+    container_name: chat_nextjs
+    restart: always
+    ports:
+      - "3001:3000"
+    depends_on:
+      - backend
+    networks:
+      - chat_network
+
+  wordpress_initech:
+    build:
+      context: ./Clients/wordpress-initech
+    container_name: chat_wordpress
+    restart: always
+    ports:
+      - "8002:80"
+    depends_on:
+      - backend
+    networks:
+      - chat_network
 
 volumes:
   mysql_data:
   weaviate_data:
+
+networks:
+  chat_network:
+    driver: bridge

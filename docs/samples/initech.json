@@ -1,0 +1,8 @@
+{
+  "entity_name": "Initech",
+  "source_doc": "Initech - Guia de Software",
+  "category": "Corporate_Software_License",
+  "priority_level": "High",
+  "sla_level": "24/7",
+  "contract_cancellation_notice_days": "60"
+}

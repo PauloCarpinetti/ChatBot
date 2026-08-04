@@ -1,0 +1,8 @@
+{
+  "entity_name": "BioHealth",
+  "source_doc": "BioHealth - Manual do Convênio",
+  "category": "Health_Insurance_Policy",
+  "priority_level": "High",
+  "geographic_scope": "National",
+  "contains_emergency_info": "true"
+}
