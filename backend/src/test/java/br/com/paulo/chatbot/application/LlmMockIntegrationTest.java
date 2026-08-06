@@ -11,15 +11,20 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import br.com.paulo.chatbot.application.service.RateLimitingService;
+
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 public class LlmMockIntegrationTest {
+
+    @MockitoBean
+    private RateLimitingService rateLimitingService;
 
     @Autowired
     private ChatOrchestratorService chatOrchestratorService;

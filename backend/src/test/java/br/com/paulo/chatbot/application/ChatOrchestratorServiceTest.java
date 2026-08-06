@@ -12,6 +12,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Counter;
+import br.com.paulo.chatbot.domain.repository.TenantRepository;
+import br.com.paulo.chatbot.domain.model.Tenant;
+import java.util.Optional;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
@@ -35,6 +40,12 @@ class ChatOrchestratorServiceTest {
     private EmbeddingStore<TextSegment> embeddingStore;
     @Mock
     private JpaChatMemoryStore chatMemoryStore;
+    @Mock
+    private TenantRepository tenantRepository;
+    @Mock
+    private MeterRegistry meterRegistry;
+    @Mock
+    private Counter counter;
 
     @InjectMocks
     private ChatOrchestratorService chatOrchestratorService;
@@ -58,6 +69,13 @@ class ChatOrchestratorServiceTest {
         // e que o tenantId é lido corretamente para formar o filtro.
         when(chatLanguageModel.generate(any(List.class)))
                 .thenReturn(new dev.langchain4j.model.output.Response<>(new dev.langchain4j.data.message.AiMessage("Resposta AI")));
+        
+        when(meterRegistry.counter(any(String.class), any(String.class), any(String.class))).thenReturn(counter);
+        
+        Tenant t = new Tenant();
+        t.setId(tenantId);
+        t.setSystemPrompt("Prompt");
+        when(tenantRepository.findById(tenantId)).thenReturn(Optional.of(t));
         
         // Simular retriever devolvendo nada
         when(embeddingModel.embed(any(String.class)))
