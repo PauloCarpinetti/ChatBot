@@ -133,7 +133,7 @@
         <!-- Chatbot Widget Integration -->
         <script>
             window.ChatBotConfig = {
-                token: 'mock-jwt-biohealth',
+                token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5hbnRJZCI6IjBkODlkMTIyLTIwOTYtNDY5Ny04YTVmLWFiYWUxZWJiM2M1YSIsImlhdCI6MTc4NTg4OTA5OH0.cNCoXV7lzG4lmV98BqKk0mYdUMZ3RqGin3pyDzvT4OA',
                 themeColor: '#10b981'
             };
         </script>

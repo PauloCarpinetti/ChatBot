@@ -3,12 +3,20 @@ package br.com.paulo.chatbot.domain.ai;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.store.embedding.weaviate.WeaviateEmbeddingStore;
+import dev.langchain4j.model.chat.StreamingChatLanguageModel;
+import dev.langchain4j.model.openai.OpenAiStreamingChatModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AiConfig {
+
+    @Value("${langchain4j.open-ai.chat-model.api-key}")
+    private String openAiApiKey;
+
+    @Value("${langchain4j.open-ai.chat-model.model-name:gpt-4o-mini}")
+    private String modelName;
 
     @Value("${chatbot.weaviate.host}")
     private String weaviateHost;
@@ -27,6 +35,14 @@ public class AiConfig {
                 .objectClass("DocumentChunk")
                 .avoidDups(true)
                 .consistencyLevel("ALL")
+                .build();
+    }
+
+    @Bean
+    public StreamingChatLanguageModel streamingChatLanguageModel() {
+        return OpenAiStreamingChatModel.builder()
+                .apiKey(openAiApiKey)
+                .modelName(modelName)
                 .build();
     }
 

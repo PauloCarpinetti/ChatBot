@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ChatMessage } from './ChatMessage';
 import { ChatInput } from './ChatInput';
-import { sendMessage } from '../../services/api';
+import { sendMessageStream } from '../../services/api';
 import { X } from 'lucide-react';
 
 interface ChatWindowProps {
@@ -35,17 +35,34 @@ export function ChatWindow({ token, onClose }: ChatWindowProps) {
     setIsLoading(true);
 
     try {
-      const response = await sendMessage(text, sessionId, token);
+      let isFirstChunk = true;
+      
+      const response = await sendMessageStream(text, sessionId, token, (chunk) => {
+          if (isFirstChunk) {
+              setMessages((prev) => [
+                  ...prev,
+                  { role: 'ASSISTANT', content: chunk }
+              ]);
+              isFirstChunk = false;
+              setIsLoading(false); // hide loading indicator when first chunk arrives
+          } else {
+              setMessages((prev) => {
+                  const newMessages = [...prev];
+                  const lastMessageIndex = newMessages.length - 1;
+                  newMessages[lastMessageIndex] = {
+                      ...newMessages[lastMessageIndex],
+                      content: newMessages[lastMessageIndex].content + chunk
+                  };
+                  return newMessages;
+              });
+          }
+      });
       
       // Atualiza session se for a 1a vez
       if (!sessionId && response.sessionId) {
         setSessionId(response.sessionId);
       }
 
-      setMessages((prev) => [
-        ...prev,
-        { role: 'ASSISTANT', content: response.message || response.reply || response.answer || "Resposta recebida." }
-      ]);
     } catch (err: any) {
       setMessages((prev) => [
         ...prev,

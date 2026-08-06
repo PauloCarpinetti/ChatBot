@@ -6,15 +6,15 @@ import java.util.UUID;
 public class ChatResponse {
     
     private UUID sessionId;
-    private String response;
+    private String reply;
     private Instant timestamp;
 
     public ChatResponse() {
     }
 
-    public ChatResponse(UUID sessionId, String response, Instant timestamp) {
+    public ChatResponse(UUID sessionId, String reply, Instant timestamp) {
         this.sessionId = sessionId;
-        this.response = response;
+        this.reply = reply;
         this.timestamp = timestamp;
     }
 
@@ -26,12 +26,12 @@ public class ChatResponse {
         this.sessionId = sessionId;
     }
 
-    public String getResponse() {
-        return response;
+    public String getReply() {
+        return reply;
     }
 
-    public void setResponse(String response) {
-        this.response = response;
+    public void setReply(String reply) {
+        this.reply = reply;
     }
 
     public Instant getTimestamp() {

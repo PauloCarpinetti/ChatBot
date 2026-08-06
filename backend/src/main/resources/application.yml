@@ -29,13 +29,16 @@ langchain4j:
     chat-model:
       api-key: ${OPENAI_API_KEY:demo}
       model-name: gpt-4o-mini
+    streaming-chat-model:
+      api-key: ${OPENAI_API_KEY:demo}
+      model-name: gpt-4o-mini
     embedding-model:
       api-key: ${OPENAI_API_KEY:demo}
       model-name: text-embedding-3-small
 
 chatbot:
   weaviate:
-    host: localhost
+    host: ${WEAVIATE_HOST:localhost}
     port: ${WEAVIATE_PORT:8090}
     scheme: http
 
@@ -45,3 +48,6 @@ jwt:
 cors:
   allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
 
+logging:
+  level:
+    dev.langchain4j: DEBUG

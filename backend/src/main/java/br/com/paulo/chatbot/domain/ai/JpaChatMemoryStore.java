@@ -24,8 +24,9 @@ public class JpaChatMemoryStore implements ChatMemoryStore {
 
     @Override
     public List<dev.langchain4j.data.message.ChatMessage> getMessages(Object memoryId) {
-        UUID sessionId = UUID.fromString(memoryId.toString());
-        UUID tenantId = TenantContextHolder.getCurrentTenantId();
+        String[] parts = memoryId.toString().split("_");
+        UUID sessionId = UUID.fromString(parts[0]);
+        UUID tenantId = UUID.fromString(parts[1]);
 
         List<ChatMessage> entities = chatMessageRepository.findBySessionIdAndTenantIdOrderByCreatedAtAsc(sessionId, tenantId);
 
@@ -44,8 +45,9 @@ public class JpaChatMemoryStore implements ChatMemoryStore {
 
     @Override
     public void updateMessages(Object memoryId, List<dev.langchain4j.data.message.ChatMessage> messages) {
-        UUID sessionId = UUID.fromString(memoryId.toString());
-        UUID tenantId = TenantContextHolder.getCurrentTenantId();
+        String[] parts = memoryId.toString().split("_");
+        UUID sessionId = UUID.fromString(parts[0]);
+        UUID tenantId = UUID.fromString(parts[1]);
 
         // Para evitar duplicação em ambientes sem session caching complexo,
         // o mais seguro numa memory store persistente customizada é comparar ou apagar/re-inserir,
@@ -87,8 +89,9 @@ public class JpaChatMemoryStore implements ChatMemoryStore {
 
     @Override
     public void deleteMessages(Object memoryId) {
-        UUID sessionId = UUID.fromString(memoryId.toString());
-        UUID tenantId = TenantContextHolder.getCurrentTenantId();
+        String[] parts = memoryId.toString().split("_");
+        UUID sessionId = UUID.fromString(parts[0]);
+        UUID tenantId = UUID.fromString(parts[1]);
         List<ChatMessage> existing = chatMessageRepository.findBySessionIdAndTenantIdOrderByCreatedAtAsc(sessionId, tenantId);
         chatMessageRepository.deleteAll(existing);
     }

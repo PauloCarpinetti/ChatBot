@@ -1,13 +1,17 @@
 package br.com.paulo.chatbot.application;
 
 import br.com.paulo.chatbot.domain.ai.JpaChatMemoryStore;
+import br.com.paulo.chatbot.domain.model.Tenant;
+import br.com.paulo.chatbot.domain.repository.TenantRepository;
 import br.com.paulo.chatbot.security.TenantContextHolder;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.service.AiServices;
+import dev.langchain4j.service.TokenStream;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.filter.Filter;
 import org.springframework.stereotype.Service;
@@ -20,52 +24,86 @@ import static dev.langchain4j.store.embedding.filter.MetadataFilterBuilder.metad
 public class ChatOrchestratorService {
 
     private final ChatLanguageModel chatLanguageModel;
+    private final StreamingChatLanguageModel streamingChatLanguageModel;
     private final EmbeddingModel embeddingModel;
     private final EmbeddingStore<TextSegment> embeddingStore;
     private final JpaChatMemoryStore chatMemoryStore;
+    private final TenantRepository tenantRepository;
 
-    public ChatOrchestratorService(ChatLanguageModel chatLanguageModel, EmbeddingModel embeddingModel, EmbeddingStore<TextSegment> embeddingStore, JpaChatMemoryStore chatMemoryStore) {
+    public ChatOrchestratorService(ChatLanguageModel chatLanguageModel, 
+                                   StreamingChatLanguageModel streamingChatLanguageModel,
+                                   EmbeddingModel embeddingModel, 
+                                   EmbeddingStore<TextSegment> embeddingStore, 
+                                   JpaChatMemoryStore chatMemoryStore,
+                                   TenantRepository tenantRepository) {
         this.chatLanguageModel = chatLanguageModel;
+        this.streamingChatLanguageModel = streamingChatLanguageModel;
         this.embeddingModel = embeddingModel;
         this.embeddingStore = embeddingStore;
         this.chatMemoryStore = chatMemoryStore;
+        this.tenantRepository = tenantRepository;
     }
 
-    // Interface interna para o AiServices do LangChain4j
     interface Assistant {
         String chat(String userMessage);
     }
+    
+    interface StreamingAssistant {
+        TokenStream chat(String userMessage);
+    }
 
     public String processMessage(UUID sessionId, String userText) {
+        return buildAssistant(sessionId, Assistant.class).chat(userText);
+    }
+    
+    public TokenStream streamMessage(UUID sessionId, String userText) {
+        return buildStreamingAssistant(sessionId).chat(userText);
+    }
+    
+    private Assistant buildAssistant(UUID sessionId, Class<Assistant> clazz) {
         UUID tenantId = TenantContextHolder.getCurrentTenantId();
-
-        // Filtro Vetorial Dinâmico para garantir isolamento por tenant
-        Filter tenantFilter = metadataKey("tenantId").isEqualTo(tenantId.toString());
-
-        // Configuração do Retriever com o filtro
-        EmbeddingStoreContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
+        String systemPrompt = getSystemPrompt(tenantId);
+        return AiServices.builder(clazz)
+                .chatLanguageModel(chatLanguageModel)
+                .contentRetriever(buildRetriever(tenantId))
+                .chatMemory(buildChatMemory(sessionId, tenantId))
+                .systemMessageProvider(chatMemoryId -> systemPrompt)
+                .build();
+    }
+    
+    private StreamingAssistant buildStreamingAssistant(UUID sessionId) {
+        UUID tenantId = TenantContextHolder.getCurrentTenantId();
+        String systemPrompt = getSystemPrompt(tenantId);
+        return AiServices.builder(StreamingAssistant.class)
+                .streamingChatLanguageModel(streamingChatLanguageModel)
+                .contentRetriever(buildRetriever(tenantId))
+                .chatMemory(buildChatMemory(sessionId, tenantId))
+                .systemMessageProvider(chatMemoryId -> systemPrompt)
+                .build();
+    }
+    
+    private String getSystemPrompt(UUID tenantId) {
+        return tenantRepository.findById(tenantId)
+                .map(Tenant::getSystemPrompt)
+                .orElse("Você é um assistente virtual prestativo.");
+    }
+    
+    private EmbeddingStoreContentRetriever buildRetriever(UUID tenantId) {
+        Filter tenantFilter = metadataKey("tenant_id").isEqualTo(tenantId.toString());
+        return EmbeddingStoreContentRetriever.builder()
                 .embeddingStore(embeddingStore)
                 .embeddingModel(embeddingModel)
                 .filter(tenantFilter)
                 .maxResults(3)
-                .minScore(0.7)
+                .minScore(0.6)
                 .build();
-
-        // Configuração do Histórico de Conversa (Chat Memory)
-        MessageWindowChatMemory chatMemory = MessageWindowChatMemory.builder()
+    }
+    
+    private MessageWindowChatMemory buildChatMemory(UUID sessionId, UUID tenantId) {
+        return MessageWindowChatMemory.builder()
                 .chatMemoryStore(chatMemoryStore)
-                .id(sessionId)
+                .id(sessionId.toString() + "_" + tenantId.toString())
                 .maxMessages(10)
                 .build();
-
-        // Montagem do RAG programaticamente
-        Assistant assistant = AiServices.builder(Assistant.class)
-                .chatLanguageModel(chatLanguageModel)
-                .contentRetriever(contentRetriever)
-                .chatMemory(chatMemory)
-                .build();
-
-        // Executar a chamada para o LLM
-        return assistant.chat(userText);
     }
 }
