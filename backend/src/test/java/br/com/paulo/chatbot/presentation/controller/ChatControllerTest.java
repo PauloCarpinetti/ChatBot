@@ -81,7 +81,7 @@ public class ChatControllerTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.sessionId").exists())
-                .andExpect(jsonPath("$.response").value("Olá humano!"))
+                .andExpect(jsonPath("$.reply").value("Olá humano!"))
                 .andExpect(jsonPath("$.timestamp").exists());
     }
 
@@ -101,7 +101,7 @@ public class ChatControllerTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.sessionId").value(existingSessionId.toString()))
-                .andExpect(jsonPath("$.response").value("Eu não sei."));
+                .andExpect(jsonPath("$.reply").value("Eu não sei."));
     }
 
     @Test

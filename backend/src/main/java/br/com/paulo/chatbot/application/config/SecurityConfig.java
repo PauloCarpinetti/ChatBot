@@ -34,7 +34,7 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .formLogin(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/actuator/health", "/api/public/health").permitAll()
+                .requestMatchers("/actuator/**", "/api/public/**").permitAll()
                 .requestMatchers("/api/chat/**", "/api/documents/**").authenticated()
                 .anyRequest().permitAll()
             )

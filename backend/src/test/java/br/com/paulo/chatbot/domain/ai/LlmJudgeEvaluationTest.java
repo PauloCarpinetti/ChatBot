@@ -12,9 +12,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import br.com.paulo.chatbot.application.service.RateLimitingService;
+
 @SpringBootTest
 @ActiveProfiles("test")
 public class LlmJudgeEvaluationTest {
+
+    @MockitoBean
+    private RateLimitingService rateLimitingService;
 
     @Autowired
     private LlmJudgeService llmJudgeService;

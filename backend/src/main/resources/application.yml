@@ -20,6 +20,18 @@ spring:
     url: jdbc:mysql://localhost:3307/${MYSQL_DATABASE:chat_tenant_db}
     user: ${MYSQL_USER:chat_user}
     password: ${MYSQL_PASSWORD:Hepta2020#}
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  metrics:
+    tags:
+      application: backend
 
 server:
   port: 8081

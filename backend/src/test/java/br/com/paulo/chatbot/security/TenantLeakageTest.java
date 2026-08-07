@@ -23,9 +23,15 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import br.com.paulo.chatbot.application.service.RateLimitingService;
+
 @SpringBootTest
 @ActiveProfiles("test")
 public class TenantLeakageTest {
+
+    @MockitoBean
+    private RateLimitingService rateLimitingService;
 
     @Autowired
     private ChatOrchestratorService chatOrchestratorService;

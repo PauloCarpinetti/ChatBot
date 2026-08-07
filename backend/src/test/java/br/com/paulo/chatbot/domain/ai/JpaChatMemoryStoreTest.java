@@ -55,7 +55,7 @@ class JpaChatMemoryStoreTest {
         when(chatMessageRepository.findBySessionIdAndTenantIdOrderByCreatedAtAsc(sessionId, tenantId))
                 .thenReturn(Arrays.asList(entity1, entity2));
 
-        List<dev.langchain4j.data.message.ChatMessage> messages = jpaChatMemoryStore.getMessages(sessionId);
+        List<dev.langchain4j.data.message.ChatMessage> messages = jpaChatMemoryStore.getMessages(sessionId.toString() + "_" + tenantId.toString());
 
         assertEquals(2, messages.size());
         assertTrue(messages.get(0) instanceof UserMessage);
@@ -72,7 +72,7 @@ class JpaChatMemoryStoreTest {
         when(chatMessageRepository.findBySessionIdAndTenantIdOrderByCreatedAtAsc(sessionId, tenantId))
                 .thenReturn(List.of());
 
-        jpaChatMemoryStore.updateMessages(sessionId, Arrays.asList(lcMsg1, lcMsg2));
+        jpaChatMemoryStore.updateMessages(sessionId.toString() + "_" + tenantId.toString(), Arrays.asList(lcMsg1, lcMsg2));
 
         ArgumentCaptor<List<ChatMessage>> captor = ArgumentCaptor.forClass(List.class);
         verify(chatMessageRepository).saveAll(captor.capture());
