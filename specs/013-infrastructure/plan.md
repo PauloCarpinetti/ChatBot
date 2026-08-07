@@ -1,22 +1,71 @@
-# Plano de Ação: Spec 013 (Infrastructure as Code)
+# Implementation Plan: Spec 013: Infrastructure as Code (GCP)
 
-## 1. Organização do Código
-O código de infraestrutura ficará isolado no diretório `infrastructure/terraform` na raiz do projeto.
+**Branch**: `feature/spec-013` | **Date**: 2026-08-07 | **Spec**: [specs/013-infrastructure/spec.md](file:///c:/Users/paulo/Desktop/projetosPortifolio/ChatBot/ChatBot/specs/013-infrastructure/spec.md)
 
-## 2. Componentes Terraform
-Serão criados os seguintes arquivos principais:
-*   `provider.tf`: Configuração do provider e definição de credenciais/região (recomendado: `us-central1`).
-*   `variables.tf`: Variáveis para parametrização do projeto (ID do projeto GCP, senha do DB, etc.).
-*   `network.tf`: Criação da VPC e configuração de acesso privado aos serviços gerenciados.
-*   `database.tf`: Configuração da instância Cloud SQL PostgreSQL.
-*   `cache.tf`: Configuração do Memorystore for Redis.
-*   `cloudrun.tf`: Definição do serviço Cloud Run, injetando as variáveis de ambiente necessárias e o Serverless VPC Access.
-*   `apis.tf`: Habilitação da Vertex AI API, Artifact Registry API, Cloud Run API, etc.
+**Input**: Feature specification from `/specs/013-infrastructure/spec.md`
 
-## 3. Segurança e Economia
-- As credenciais de banco não ficarão expostas no código, sendo injetadas pelo Secret Manager ou variáveis no apply.
-- Cloud SQL usará instâncias econômicas (`db-f1-micro`) para poupar os créditos GCP.
-- A comunicação entre o Cloud Run, Redis e PostgreSQL será toda interna (sem IP público para os bancos), garantindo total isolamento via VPC.
+## Summary
 
-## 4. Integração LangChain4j e Vertex AI
-Como definido na Spec 012, após a infraestrutura estar provisionada, o código Spring Boot já existente se conectará à Vertex AI usando o token de serviço embutido no Cloud Run via Application Default Credentials (ADC).
+Provision GCP infrastructure (Cloud Run, Cloud SQL, Memorystore, Vertex AI, Artifact Registry, VPC) using Terraform. All data stores will be securely placed inside a Virtual Private Cloud (VPC) with internal IPs only, while the Cloud Run backend accesses them via a Serverless VPC Access Connector.
+
+## Technical Context
+
+**Language/Version**: Terraform (>= 1.5.0), HCL
+
+**Primary Dependencies**: `hashicorp/google` Terraform Provider
+
+**Storage**: Cloud SQL (PostgreSQL db-f1-micro) and Memorystore (Redis BASIC tier)
+
+**Testing**: `terraform validate`, `terraform plan`
+
+**Target Platform**: Google Cloud Platform (GCP)
+
+**Project Type**: Infrastructure as Code (IaC)
+
+**Performance Goals**: N/A (Infrastructure provisioning)
+
+**Constraints**: Minimize cost by using free-tier or cheapest available managed resources (Cloud Run scaling to 0, db-f1-micro, Redis 1GB). Secure all databases behind a VPC.
+
+**Scale/Scope**: Cloud Run will scale horizontally from 0 to 5 instances max based on traffic. 
+
+## Constitution Check
+
+*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+
+No violations. The chosen architecture respects the existing Spring Boot multi-tenant backend constraints.
+
+## Project Structure
+
+### Documentation (this feature)
+
+```text
+specs/013-infrastructure/
+├── plan.md              # This file
+├── spec.md              # Feature specification
+└── tasks.md             # Execution task list
+```
+
+### Source Code (repository root)
+
+```text
+infrastructure/
+└── terraform/
+    ├── apis.tf          # API enablement
+    ├── cache.tf         # Memorystore (Redis)
+    ├── cloudrun.tf      # Cloud Run and Artifact Registry
+    ├── database.tf      # Cloud SQL
+    ├── network.tf       # VPC and Private IP
+    ├── outputs.tf       # Provisioned IPs and URLs
+    ├── provider.tf      # GCP Provider config
+    └── variables.tf     # Configurable inputs
+```
+
+**Structure Decision**: A dedicated `infrastructure/terraform` directory cleanly separates IaC code from application source code (`backend/`). Modular `.tf` files ensure readability and maintainability compared to a single monolithic `main.tf`.
+
+## Complexity Tracking
+
+> **Fill ONLY if Constitution Check has violations that must be justified**
+
+| Violation | Why Needed | Simpler Alternative Rejected Because |
+|-----------|------------|-------------------------------------|
+| N/A       | N/A        | N/A                                 |
